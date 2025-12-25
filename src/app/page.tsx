@@ -1,30 +1,16 @@
-'use client'; // Client component
-
 import { Suspense } from 'react';
 import { Sparkles, TrendingUp } from 'lucide-react';
 import MovieGrid from '@/components/movies/MovieGrid';
-import SearchBar from '@/components/search/SearchBar';
-import { MoviifyLogo } from '@/components/icons/MoviifyLogo';
+import HomeClientContent from '@/components/layout/HomeClientContent';
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative flex flex-col items-center justify-center text-center min-h-screen bg-background text-foreground">
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
-          <div className="relative z-10 space-y-6 px-4">
-            <MoviifyLogo className="w-96 md:w-[32rem] h-auto text-primary mx-auto" />
-            <div className="max-w-xl mx-auto flex flex-col items-center gap-4">
-              <p className="text-xl md:text-2xl text-foreground/80">
-                Discover your next favorite film.
-              </p>
-              <SearchBar />
-            </div>
-          </div>
-        </section>
+        {/* Hero Section with interactive elements is now a Client Component */}
+        <HomeClientContent />
 
-        {/* Trending & Recommendations */}
+        {/* Trending & Recommendations - Data fetching happens on the server */}
         <section className="py-8 md:py-16 px-4 md:px-8 lg:px-16 space-y-12">
           {/* Trending */}
           <div className="space-y-8">
@@ -45,14 +31,22 @@ export default function Home() {
           <div className="space-y-8">
             <div className="flex items-center gap-3">
               <Sparkles className="w-8 h-8 text-primary" />
-              <h2 className="text-3xl font-bold font-headline">Recommendation</h2>
+              <h2 className="text-3xl font-bold font-headline">
+                Top Picks for You
+              </h2>
             </div>
             <Suspense
               fallback={
-                <div className="h-96 w-full bg-secondary animate-pulse rounded-lg" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="space-y-2">
+                      <div className="aspect-[2/3] w-full bg-secondary animate-pulse rounded-lg" />
+                    </div>
+                  ))}
+                </div>
               }
             >
-              <MovieGrid path="trending/all/week" />
+              <MovieGrid path="discover/movie" />
             </Suspense>
           </div>
         </section>
